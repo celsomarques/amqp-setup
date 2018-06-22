@@ -57,7 +57,7 @@ function _consumer(channel, { consumers = [] }) {
   return BPromise.all(consumersMap.map(map))
 }
 
-async function setup(channel, opts = {}) {
+export default async function setup(channel, opts = {}) {
 
   try {
 
@@ -73,5 +73,3 @@ async function setup(channel, opts = {}) {
     throw err
   }
 }
-
-export default { setup }

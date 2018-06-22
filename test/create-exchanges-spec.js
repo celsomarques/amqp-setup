@@ -1,6 +1,6 @@
 'use strict'
 
-import AmqplibSetup from '../src/index'
+import amqplibSetup from '../src/index'
 
 describe('CreateExchangesSpec', function() {
 
@@ -12,7 +12,7 @@ describe('CreateExchangesSpec', function() {
   })
 
   it('with empty exchanges', async function() {
-    await AmqplibSetup.setup(channel)
+    await amqplibSetup(channel)
     expect(channel.assertExchange).to.have.not.been.called
   })
 
@@ -21,7 +21,7 @@ describe('CreateExchangesSpec', function() {
     const name = 'test.ex'
     const type = 'direct'
     const exchanges = [{ name, type }]
-    await AmqplibSetup.setup(channel, { exchanges })
+    await amqplibSetup(channel, { exchanges })
     expect(channel.assertExchange).to.have.been.calledWith(name, type)
   })
 
@@ -37,7 +37,7 @@ describe('CreateExchangesSpec', function() {
       { name: name1, type: type1 },
       { name: name2, type: type2 }
     ]
-    await AmqplibSetup.setup(channel, { exchanges })
+    await amqplibSetup(channel, { exchanges })
     expect(channel.assertExchange).to.have.been.calledTwice
     expect(channel.assertExchange.firstCall).to.have.been.calledWith(name1, type1)
     expect(channel.assertExchange.secondCall).to.have.been.calledWith(name2, type2)

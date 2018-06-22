@@ -1,6 +1,6 @@
 'use strict'
 
-import AmqplibSetup from '../src/index'
+import amqplibSetup from '../src/index'
 
 describe('CreateQueuesSpec', function() {
 
@@ -12,7 +12,7 @@ describe('CreateQueuesSpec', function() {
   })
 
   it('with empty queues', async function() {
-    await AmqplibSetup.setup(channel)
+    await amqplibSetup(channel)
     expect(channel.assertQueue).to.have.not.been.called
   })
 
@@ -21,7 +21,7 @@ describe('CreateQueuesSpec', function() {
     const name = 'test.q'
     const options = { durable: true }
     const queues = [{ name, options }]
-    await AmqplibSetup.setup(channel, { queues })
+    await amqplibSetup(channel, { queues })
     expect(channel.assertQueue).to.have.been.calledWith(name, options)
   })
 
@@ -37,7 +37,7 @@ describe('CreateQueuesSpec', function() {
       { name: name1, options: opts1 },
       { name: name2, options: opts2 }
     ]
-    await AmqplibSetup.setup(channel, { queues })
+    await amqplibSetup(channel, { queues })
     expect(channel.assertQueue).to.have.been.calledTwice
     expect(channel.assertQueue.firstCall).to.have.been.calledWith(name1, opts1)
     expect(channel.assertQueue.secondCall).to.have.been.calledWith(name2, opts2)
