@@ -24,19 +24,17 @@ const _wrapper = (msg, handlers) => {
   const { type } = msg.properties
   const handlerObj = handlers.find((h) => type === h.type)
 
-  if (!handlerObj) throw 'You need to specify handler for queue'
-  const handler = handlerObj.handler.bind(this)
-  handler(msg)
+  if (handlerObj) return handlerObj.handler(msg)
+  throw 'You need to specify handler for queue'
 }
 
 export default (channel, { consumers = [] }) => {
 
-  const wrapper = _wrapper.bind(channel)
   const consumersMap = consumers.reduce(_reduce, [])
   debug('Consumers map', consumersMap)
 
   const map = ({ name, handlers }) => channel.
-    consume(name, (msg) => wrapper(msg, handlers))
+    consume(name, (msg) => _wrapper(msg, handlers))
 
   return BPromise.all(consumersMap.map(map))
 }
