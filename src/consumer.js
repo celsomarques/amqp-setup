@@ -28,13 +28,13 @@ const _wrapper = (msg, handlers) => {
   throw 'You need to specify handler for queue'
 }
 
-export default (channel, { consumers = [] }) => {
+export default function(channel, { consumers = [] }) {
 
   const consumersMap = consumers.reduce(_reduce, [])
   debug('Consumers map', consumersMap)
 
   const map = ({ name, handlers }) => channel.
-    consume(name, (msg) => _wrapper(msg, handlers))
+    consume(name, (msg) => _wrapper.apply(channel, msg, handlers))
 
   return BPromise.all(consumersMap.map(map))
 }
