@@ -2,7 +2,7 @@
 
 import amqplibSetup from '../src/index'
 
-describe('CreateQueuesSpec', function() {
+describe('QueueSpec', function() {
 
   let channel
   beforeEach(function() {

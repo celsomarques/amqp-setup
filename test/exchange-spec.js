@@ -2,7 +2,7 @@
 
 import amqplibSetup from '../src/index'
 
-describe('CreateExchangesSpec', function() {
+describe('ExchangeSpec', function() {
 
   let channel
   beforeEach(function() {
