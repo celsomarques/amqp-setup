@@ -7,19 +7,12 @@ import consumer from './consumer'
 
 const debug = Debug('amqplib-setup')
 
-export default async function setup(channel, opts = {}) {
+export default async(channel, opts = {}) => {
 
-  try {
+  await createExchanges(channel, opts)
+  await createQueues(channel, opts)
+  await bindQueues(channel, opts)
+  await consumer(channel, opts)
 
-    await createExchanges(channel, opts)
-    await createQueues(channel, opts)
-    await bindQueues(channel, opts)
-    await consumer(channel, opts)
-
-    debug('Setup was completed successfuly')
-
-  } catch (err) {
-    debug('Error in setup', err)
-    throw err
-  }
+  debug('Setup was completed successfuly')
 }
