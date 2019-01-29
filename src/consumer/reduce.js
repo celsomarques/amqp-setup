@@ -6,7 +6,7 @@ const debug = Debug('amqplib-setup')
 
 const findQueue = ({ name }) => (q) => q.name === name
 const createHandler = (consumer) => ({
-  type: consumer.type || '',
+  type: consumer.type || '*',
   handler: consumer.handler
 })
 

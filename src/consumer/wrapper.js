@@ -1,11 +1,11 @@
 'use strict'
 
 import Debug from 'debug'
-import BPromise from 'bluebird'
 
 const debug = Debug('amqplib-setup')
 
-const findHandler = (type) => (h) => type === h.type
+const findHandler = (type) => (h) =>
+  new RegExp(`${type}|\\*`).test(h.type)
 
 export default (channel) => (msg, handlers) => {
 
