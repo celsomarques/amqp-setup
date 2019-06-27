@@ -80,7 +80,7 @@ const setup = async(channel) => {
     await amqplibSetup, channel, salesOrderConfig)
     logger.info('Broker was started successfully')
   } catch (err) {
-    logger.error('Failed to start broker', result.get())
+    logger.error('Failed to start broker', err)
   }
 }
 
