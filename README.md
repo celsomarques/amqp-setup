@@ -77,7 +77,7 @@ const setup = async(channel) => {
   channel.prefetch(parseInt(process.env.RABBITMQ_PREFETCH))
 
   try {
-    await amqplibSetup, channel, personConfig)
+    await amqplibSetup(channel, personConfig)
     logger.info('Broker was started successfully')
   } catch (err) {
     logger.error('Failed to start broker', err)
