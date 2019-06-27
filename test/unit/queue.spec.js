@@ -1,34 +1,34 @@
 'use strict'
 
-import { create, bind } from '../src/queue'
+import { create, bind } from '../../src/queue'
 
 describe('QueueSpec', function() {
 
   let channel
   beforeEach(function() {
     channel = {
-      assertQueue: sinon.stub(),
-      bindQueue: sinon.stub()
+      assertQueue: jest.fn(),
+      bindQueue: jest.fn()
     }
   })
 
-  context('.create', function() {
+  describe('.create', function() {
 
-    it('with empty queues', async function() {
+    test('with empty queues', async function() {
       await create(channel)
-      expect(channel.assertQueue).to.have.not.been.called
+      expect(channel.assertQueue).not.toHaveBeenCalled()
     })
 
-    it('with 1 queue', async function() {
+    test('with 1 queue', async function() {
 
       const name = 'test.q'
       const options = { durable: true }
       const queues = [{ name, options }]
       await create(channel, { queues })
-      expect(channel.assertQueue).to.have.been.calledWith(name, options)
+      expect(channel.assertQueue).toHaveBeenCalledWith(name, options)
     })
 
-    it('with 2 queues', async function() {
+    test('with 2 queues', async function() {
 
       const name1 = 'test1.q'
       const opts1 = { deadLetterExchange: 'dead.ex' }
@@ -41,20 +41,20 @@ describe('QueueSpec', function() {
         { name: name2, options: opts2 }
       ]
       await create(channel, { queues })
-      expect(channel.assertQueue).to.have.been.calledTwice
-      expect(channel.assertQueue.firstCall).to.have.been.calledWith(name1, opts1)
-      expect(channel.assertQueue.secondCall).to.have.been.calledWith(name2, opts2)
+      expect(channel.assertQueue).toHaveBeenCalledTimes(2)
+      expect(channel.assertQueue).toHaveBeenNthCalledWith(1, name1, opts1)
+      expect(channel.assertQueue).toHaveBeenNthCalledWith(2, name2, opts2)
     })
   })
 
-  context('.bind', function() {
+  describe('.bind', function() {
 
-    it('with empty bindings', async function() {
+    test('with empty bindings', async function() {
       await bind(channel)
-      expect(channel.bindQueue).to.have.not.been.called
+      expect(channel.bindQueue).not.toHaveBeenCalled()
     })
 
-    it('with 1 bindings', async function() {
+    test('with 1 bindings', async function() {
 
       const queue = 'test.q'
       const exchange = 'test.ex'
@@ -63,14 +63,14 @@ describe('QueueSpec', function() {
         { queue, exchange, pattern }
       ]
       await bind(channel, { bindings })
-      expect(channel.bindQueue).to.have.been.calledWith(
+      expect(channel.bindQueue).toHaveBeenCalledWith(
         queue,
         exchange,
         pattern
       )
     })
 
-    it('with 2 bindings', async function() {
+    test('with 2 bindings', async function() {
 
       const queue1 = 'test1.q'
       const exchange1 = 'test1.ex'
@@ -85,13 +85,15 @@ describe('QueueSpec', function() {
         { queue: queue2, exchange: exchange2, pattern: pattern2 }
       ]
       await bind(channel, { bindings })
-      expect(channel.bindQueue).to.have.been.calledTwice
-      expect(channel.bindQueue.firstCall).to.have.been.calledWith(
+      expect(channel.bindQueue).toHaveBeenCalledTwice
+      expect(channel.bindQueue).toHaveBeenNthCalledWith(
+        1,
         queue1,
         exchange1,
         pattern1
       )
-      expect(channel.bindQueue.secondCall).to.have.been.calledWith(
+      expect(channel.bindQueue).toHaveBeenNthCalledWith(
+        2,
         queue2,
         exchange2,
         pattern2

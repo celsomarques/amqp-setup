@@ -1,9 +1,5 @@
 'use strict'
 
-import Debug from 'debug'
-
-const debug = Debug('amqplib-setup')
-
 const findHandler = (type) => (h) =>
   new RegExp(`${type}|\\*`).test(h.type)
 
