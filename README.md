@@ -8,6 +8,7 @@
   {
     "name": "person.ex",
     "type": "fanout"
+  }
 ]
 ```
 
